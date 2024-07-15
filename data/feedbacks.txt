@@ -1,0 +1,16 @@
+{"recipientEmail":"syxew@mailinator.com","feedback":"dasdasdas asdasdasd asdasdsad","createdAt":"2024-07-08 03:13:51"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"saasdasd","createdAt":"2024-07-08 03:26:30"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"jklkjkljklj","createdAt":"2024-07-08 03:26:33"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"sfsdfsdfsd","createdAt":"2024-07-08 03:26:37"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"sdfsdfsdfsdf","createdAt":"2024-07-08 03:26:40"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"sdfsvxvxvxvxv","createdAt":"2024-07-08 03:26:43"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"asdasdasdasd","createdAt":"2024-07-08 03:31:45"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"asdasdasdasd","createdAt":"2024-07-08 03:39:14"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"xzzxzxxzx","createdAt":"2024-07-08 03:43:30"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"sdfsdfsdfsdf","createdAt":"2024-07-08 09:44:16"}
+{"recipientEmail":"syxew@mailinator.com","feedback":"ssswwwwwww","createdAt":"2024-07-08 09:48:01"}
+{"recipientEmail":"lukah@mailinator.com","feedback":"sdfsdf sdfsdf sdfsdfsdfsdfsdf","createdAt":"2024-07-08 09:50:57"}
+{"recipientEmail":"lukah@mailinator.com","feedback":"????????????????","createdAt":"2024-07-08 09:51:08"}
+{"recipientEmail":"lukah@mailinator.com","feedback":"\/\/\/\/\/\/\/\/\/\/\/\/","createdAt":"2024-07-08 09:51:12"}
+{"recipientEmail":"lukah@mailinator.com","feedback":"\\\\\\\\\\\\","createdAt":"2024-07-08 09:51:20"}
+{"recipientEmail":"zukepibad@mailinator.com","feedback":"testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestte\r\n\r\nsttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest","createdAt":"2024-07-08 10:23:12"}
