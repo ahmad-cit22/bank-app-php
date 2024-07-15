@@ -1,0 +1,15 @@
+{
+    "name": "user/bank-app-php",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nafis Ahmed",
+            "email": "n.ahmad.web.cit22@gmail.com"
+        }
+    ],
+    "require": {}
+}
