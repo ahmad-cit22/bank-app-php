@@ -2,40 +2,28 @@
 
 namespace App\Classes;
 
+use App\Interfaces\StorageInterface;
 use Exception;
 
-class Feedback
+class Transaction
 {
-    /**
-     * Constructor for the Feedback class.
-     *
-     * @param string $recipientEmail The email of the recipient
-     * @param string $feedback The feedback message
-     */
-    public function __construct(private string $recipientEmail, private string $feedback) 
+    private $storage;
+    
+    public function __construct(StorageInterface $storage)
     {
-        $this->recipientEmail = $recipientEmail;
-        $this->feedback = $feedback;
+        $this->storage = $storage;
     }
 
-    /**
-     * Saves the feedback data to a file.
-     *
-     * This function creates a JSON object containing the recipient email, feedback message, and creation date.
-     * It then appends the JSON object to the 'data/feedbacks.txt' file.
-     *
-     * @return void
-     */
-    public function saveData(): void
+    public function save(string $userEmail, string $receiverEmail = null, float $amount, string $type): bool
     {
-        $feedbackData = [
-            'recipientEmail' => $this->recipientEmail,
-            'feedback' => $this->feedback,
-            'createdAt' => Utility::dateFormat()
+        $transaction = [
+            'user_email' => $userEmail,
+            'receiver_email' => $receiverEmail,
+            'amount' => $amount,
+            'type' => $type,
+            'created_at' => date('Y-m-d H:i:s'),
         ];
 
-        $data = json_encode($feedbackData);
-
-        file_put_contents('data/feedbacks.txt', $data . PHP_EOL, FILE_APPEND);
+        return $this->storage->saveTransaction($transaction);
     }
 }

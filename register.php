@@ -12,16 +12,7 @@ use App\Classes\ErrorBag;
 use App\Classes\Message;
 
 if ($auth->isLoggedIn()) {
-  $user = $auth->getCurrentUser();
-  $userRole = $user['role']; 
-
-  if ($userRole === 'Admin') {
-    header('Location: admin/customers.php');
-    exit;
-  } elseif ($userRole === 'Customer') {
-    header('Location: customer/customer_dashboard.php');
-    exit;
-  }
+  $auth->redirectAsPerRole();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $name = Input::get('name');
   $email = Input::get('email');
   $password = Input::get('password');
+  $confirmPassword = Input::get('confirm_password');
 
   if (!Input::isNameValid($name)) {
     $errorBag->addError('name', 'Please enter a valid name using only letters and spaces.');
@@ -43,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errorBag->addError('password', 'Please enter a password using at least one capital letter, one lowercase letter, one number, and a minimum of 8 characters.');
   }
 
-  if (!Input::isConfirmPasswordValid($password, Input::get('confirm_password'))) {
+  if (!Input::isConfirmPasswordValid($password, $confirmPassword)) {
     $errorBag->addError('confirm_password', 'Please enter the same password as the one above.');
   }
 
@@ -98,28 +90,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </h2>
     </div>
 
+    <?php $message = Message::flash('error');
+    if ($message) : ?>
+      <div class="mt-3 bg-red-100 border border-red-200 text-sm text-red-700 rounded-lg p-3 text-center" role="alert">
+        <span class="font-bold"><?= $message; ?></span>
+      </div>
+    <?php endif; ?>
+
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
       <div class="px-6 py-12 bg-white shadow sm:rounded-lg sm:px-12">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
           <div>
             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
             <div class="mt-2">
-              <input id="name" name="name" type="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
+              <input id="name" name="name" type="text" value="<?= $name ?? '' ?>" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
             </div>
+
+            <?php if (isset($errors['name'])) : ?>
+              <p class="text-sm text-red-700 mt-2" id="name-error"><?= $errors['name']; ?></p>
+            <?php endif; ?>
           </div>
 
           <div>
             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
-              <input id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
+              <input id="email" name="email" type="email" autocomplete="email" value="<?= $email ?? '' ?>" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
             </div>
+
+            <?php if (isset($errors['email'])) : ?>
+              <p class="text-sm text-red-700 mt-2" id="email-error"><?= $errors['email']; ?></p>
+            <?php endif; ?>
           </div>
 
           <div>
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
             <div class="mt-2">
-              <input id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
+              <input id="password" name="password" type="password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
             </div>
+
+            <?php if (isset($errors['password'])) : ?>
+              <p class="text-sm text-red-700 mt-2" id="password-error"><?= $errors['password']; ?></p>
+            <?php endif; ?>
+          </div>
+
+          <div>
+            <label for="confirm_password" class="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
+            <div class="mt-2">
+              <input id="confirm_password" name="confirm_password" type="password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
+            </div>
+
+            <?php if (isset($errors['confirm_password'])) : ?>
+              <p class="text-sm text-red-700 mt-2" id="password-error"><?= $errors['confirm_password']; ?></p>
+            <?php endif; ?>
           </div>
 
           <div>

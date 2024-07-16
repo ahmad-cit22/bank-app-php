@@ -13,27 +13,43 @@ class User
         $this->storage = $storage;
     }
 
+    public function getUser(string $email): array
+    {
+        return $this->storage->getUser($email);
+    }
+
     public function getAllUsers(): array
     {
         return $this->storage->getAllUsers();
     }
 
-    public function getUserTransactions(int $userId): array
+    public function getUserTransactions(string $userEmail): array
     {
-        return $this->storage->getTransactionsOfUser($userId);
+        return $this->storage->getTransactionsOfUser($userEmail);
     }
 
-    public function getBalance(int $userId): float
+    public function getAllTransactions(): array
     {
-        $transactions = $this->storage->getTransactionsOfUser($userId);
+        return $this->storage->getAllTransactions();
+    }
+
+    public function getBalance(string $userEmail): float
+    {
+        $transactions = $this->storage->getTransactionsOfUser($userEmail);
         $balance = 0;
+
+        if (empty($transactions) || count($transactions) === 0) {
+            return $balance;
+        }
+
         foreach ($transactions as $transaction) {
-            if ($transaction['type'] === 'deposit') {
+            if ($transaction['type'] === 'credit') {
                 $balance += $transaction['amount'];
-            } elseif ($transaction['type'] === 'withdraw') {
+            } elseif ($transaction['type'] === 'debit') {
                 $balance -= $transaction['amount'];
             }
         }
+
         return $balance;
     }
 }

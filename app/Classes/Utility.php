@@ -30,6 +30,20 @@ class Utility
             return date('Y-m-d H:i:s');
         }
     }
+
+    public static function generateNameInitials(string $name): string
+    {
+        $words = explode(" ", $name);
+        $initials = "";
+
+        if (count($words) > 1) {
+            $initials .= substr($words[0], 0, 1) . substr($words[1], 0, 1);
+        } else {
+            $initials .= substr($words[0], 0, 2);
+        }
+
+        return $initials;
+    }
 }
 
 

@@ -20,17 +20,11 @@ if ($adminPassword !== $config['admin_creation_password']) {
 }
 
 echo "\n";
-echo "Enter Name: ";
-$name = trim(fgets(STDIN));
 
-echo "Enter Email: ";
-$email = trim(fgets(STDIN));
-
-echo "Enter Password: ";
-$password = fgets(STDIN);
-
-echo "Confirm Password: ";
-$confirmPassword = fgets(STDIN);
+$name = trim(readline("Enter Name: "));
+$email = trim(readline("Enter Email: "));
+$password = trim(readline("Enter Password: "));
+$confirmPassword = trim(readline("Confirm Password: "));
 
 $name = Input::sanitizeInput($name);
 $email = Input::sanitizeInput($email);
@@ -59,11 +53,13 @@ if (!Input::isConfirmPasswordValid($password, $confirmPassword)) {
     exit;
 }
 
+$hashedPassword = Input::hashPassword($password);
+
 echo "\n";
 echo "Creating Admin...\n";
 
 try {
-    $auth->register($name, $email, $password, 'Admin');
+    $auth->register($name, $email, $hashedPassword, 'Admin');
     echo "\n";
     echo "Admin created successfully.\n";
     echo "Email: " . $email . "\n";

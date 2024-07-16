@@ -5,6 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use App\Storage\FileStorage;
 use App\Storage\DatabaseStorage;
 use App\Classes\Auth;
+use App\Classes\Transaction;
 use App\Classes\User;
 use App\Interfaces\StorageInterface;
 
@@ -36,6 +37,7 @@ if (!$storage instanceof StorageInterface) {
 
 $auth = new Auth($storage);
 $user = new User($storage);
+$transaction = new Transaction($storage);
 
 return [
     'auth' => $auth,

@@ -1,5 +1,9 @@
-{"name":"Abel Holland","email":"syxew@mailinator.com","password":"$2y$10$KTyX21eZLOyFcD5FI7Aqd.K5VGJdaiMhbtq7MGM2QNAIXrbyUG5z2","feedbackString":"c0e90f","created_at":"2024-07-08 03:12:52"}
-{"name":"Aimee Roman","email":"wizako@mailinator.com","password":"$2y$10$ZmnvGs.AQ25eir3v.9f1.uyheLnNKubRrw83Tg\/XMHk59UvYhwIji","feedbackString":"5f9e77","created_at":"2024-07-08 03:49:47"}
-{"name":"Yuri Finley","email":"lukah@mailinator.com","password":"$2y$10$DSZkfePY.MOyUMnsud3B2uXaJrZIo0bmJCVsLz2kA6uEEic0YNGoa","feedbackString":"1ea2ad","created_at":"2024-07-08 03:49:54"}
-{"name":"Keane Buck","email":"tyrekuxuq@mailinator.com","password":"$2y$10$yPtXe7T\/7Y4DJiueX709OONymoMIOo3XOT.frkNeV97CHpgRIKOK.","feedbackString":"5eef46","created_at":"2024-07-08 04:21:06"}
-{"name":"MacKensie Holcomb","email":"zukepibad@mailinator.com","password":"$2y$10$yH6T1gFzFCBzGtymYt.5y.giwIWLIDWgEauqGCrglsN7ybZBx06yS","feedbackString":"c40409","created_at":"2024-07-08 04:21:27"}
+{"id":1,"name":"Melissa Jacobs","email":"sakerexes@mailinator.com","password":"$2y$10$hJSA4fHK6xoJsACFsEgYouFTqvrAxPjHAb4h4HpMkU5u.qMicnOh2","role":"Customer"}
+{"id":3,"name":"Yoshio Romero","email":"vymubux@mailinator.com","password":"$2y$10$2\/4h.j0gLZhirOW7tsS7KuYr4OBGnOxVMZSRuHmifgfRL7rx4pwxm","role":"Customer"}
+{"id":6,"name":"Stuart Pennington","email":"vuromubu@mailinator.com","password":"$2y$10$AdSo\/tqtIqyXRZXK8O171O2FLkxwiDn6Ly9XwAuRzreOFC08hjjxy","role":"Customer"}
+{"id":7,"name":"Zorita Jackson","email":"pemuzuza@mailinator.com","password":"$2y$10$6TVctjPyhXT1iAdX4zqiCOcTUPJkPr8Pj.ffReLoSYt4kA.z5ilNK","role":"Customer"}
+{"id":8,"name":"Nafis Ahmed","email":"asd@asd.asd","password":"$2y$10$iQstSsoWMg9R760OSZ\/r0uh.j1Y9xnXfWQm6pLGlCOpyUfV0gufgS","role":"Admin"}
+{"id":9,"name":"Arden Floyd","email":"cutulodyka@mailinator.com","password":"$2y$10$6ng5AANaQf2lNR5SM32bTOjjWvXXQPs6rWl0ZXDIbDNCHqEiMGc7W","role":"Customer"}
+{"id":10,"name":"Demetrius Mcintyre","email":"xubyr@mailinator.com","password":"$2y$10$8OGPouGQABMS4dI5tEgg4uDjDtK\/54Kso0QSGrfNtm.K0tvUSBVdi","role":"Customer"}
+{"id":11,"name":"Asher Alvarado","email":"pyxityj@mailinator.com","password":"$2y$10$xMPpyWM.kAMme3D2tEwgquLBtlrHxVksWQ\/g.eBnr.8eAU.69Zbbe","role":"Customer"}
+{"id":12,"name":"Quon Price","email":"movelaqody@mailinator.com","password":"$2y$10$jTgxV9\/bFacshAT8BXr7Zu6BXbO1o.Hfz5On4b\/hREPA\/D4ziCfGG","role":"Customer"}

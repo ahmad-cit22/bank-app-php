@@ -7,19 +7,28 @@ use Exception;
 
 class FileStorage implements StorageInterface
 {
-    private $userFile = 'data/users.txt';
-    private $transactionFile = 'data/transactions.txt';
+    private $dataDir;
+    private $userFile;
+    private $transactionFile;
 
     private array $usersData = [];
     private array $transactionsData = [];
 
     public function __construct()
     {
+        $this->dataDir = dirname(__DIR__, 2) . '/data';
+        $this->userFile = $this->dataDir . '/users.txt';
+        $this->transactionFile = $this->dataDir . '/transactions.txt';
+
+        if (!is_dir($this->dataDir)) {
+            mkdir($this->dataDir, 0777, true);
+        }
+        
         if (!file_exists($this->userFile)) {
-            file_put_contents($this->userFile, json_encode(''));
+            touch($this->userFile);
         }
         if (!file_exists($this->transactionFile)) {
-            file_put_contents($this->transactionFile, json_encode(''));
+            touch($this->transactionFile);
         }
 
         $this->loadData();
@@ -66,6 +75,20 @@ class FileStorage implements StorageInterface
         return $users;
     }
 
+    public function getLastUserId(): ?int
+    {
+        $users = [];
+
+        if ($this->usersData && count($this->usersData) > 0) {
+            foreach ($this->usersData as $userData) {
+                $user = json_decode($userData, true);
+                    $users[] = $user;
+            }
+        }
+
+        return $users ? $users[count($users) - 1]['id'] : 0;
+    }
+
     public function saveTransaction(array $transaction): bool
     {
         $data = json_encode($transaction);
@@ -75,7 +98,7 @@ class FileStorage implements StorageInterface
         return true;
     }
 
-    public function getTransactionsOfUser(int $userId): array
+    public function getTransactionsOfUser(string $userEmail): array
     {
         $transactions = [];
 
@@ -83,7 +106,7 @@ class FileStorage implements StorageInterface
             foreach ($this->transactionsData as $transactionData) {
                 $transaction = json_decode($transactionData, true);
 
-                if ($transaction['user_id'] === $userId) {
+                if ($transaction['email'] === $userEmail) {
                     $transactions[] = $transaction;
                 }
             }

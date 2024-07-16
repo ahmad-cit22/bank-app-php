@@ -96,6 +96,17 @@ class Input
         return true;
     }
 
+    public static function isAmountValid(string $amount): bool
+    {
+        $amount = str_replace(',', '', $amount);
+        $filteredAmount = filter_var($amount, FILTER_VALIDATE_FLOAT);
+
+        if (empty($filteredAmount) || $filteredAmount <= 0) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Sanitizes the input by removing HTML special characters and slashes,
      * and trimming any leading or trailing whitespace.
@@ -119,5 +130,3 @@ class Input
         return password_hash($password, PASSWORD_DEFAULT);
     }
 }
-
-
