@@ -43,7 +43,7 @@ class FileStorage implements StorageInterface
         return true;
     }
 
-    public function getUser(string $email): ?array
+    public function getUserByEmail(string $email): ?array
     {
         if ($this->usersData && count($this->usersData) > 0) {
             foreach ($this->usersData as $userData) {

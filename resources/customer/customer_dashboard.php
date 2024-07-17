@@ -233,9 +233,9 @@ $balance = $transaction->getBalance($user['email']);
                           if ($transaction['type'] == 'transfer') {
                             if ($transaction['receiver_email'] == $user['email']) {
                               $isReceived = true;
-                              $sender = $userClass->getUser($transaction['user_email']);
+                              $sender = $userClass->getUserByEmail($transaction['user_email']);
                             } else {
-                              $receiver = $userClass->getUser($transaction['receiver_email']);
+                              $receiver = $userClass->getUserByEmail($transaction['receiver_email']);
                             }
                           } else {
                             if ($transaction['type'] == 'deposit') {

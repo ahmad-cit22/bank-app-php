@@ -7,3 +7,4 @@
 {"id":10,"name":"Demetrius Mcintyre","email":"xubyr@mailinator.com","password":"$2y$10$8OGPouGQABMS4dI5tEgg4uDjDtK\/54Kso0QSGrfNtm.K0tvUSBVdi","role":"Customer"}
 {"id":11,"name":"Asher Alvarado","email":"pyxityj@mailinator.com","password":"$2y$10$xMPpyWM.kAMme3D2tEwgquLBtlrHxVksWQ\/g.eBnr.8eAU.69Zbbe","role":"Customer"}
 {"id":12,"name":"Quon Price","email":"movelaqody@mailinator.com","password":"$2y$10$jTgxV9\/bFacshAT8BXr7Zu6BXbO1o.Hfz5On4b\/hREPA\/D4ziCfGG","role":"Customer"}
+{"id":13,"name":"Sonya Dixon","email":"hosadepyq@mailinator.com","password":"$2y$10$M21rZ0qdBnJ5dclCX4vnVuJcXM\/FqtQzENHEGa2xz2n0OOBT14ab6","role":"Customer"}

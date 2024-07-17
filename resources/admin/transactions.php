@@ -172,10 +172,31 @@ $allTransactions = $transaction->getAllTransactions();
           <!-- List of All The Transactions -->
           <div class="px-4 sm:px-6 lg:px-8">
             <div class="sm:flex sm:items-center">
-              <div class="sm:flex-auto">
+              <div class="flex justify-between w-full">
                 <p class="mt-2 text-sm text-gray-700">
                   List of transactions made by all the customers.
                 </p>
+
+
+                <form action="./customer_transactions.php" method="GET" class="w-1/3" novalidate>
+                  <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                      </svg>
+                    </div>
+                    <input type="email" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search By Email..." name="search" required />
+                    <!-- Error Message -->
+                    <?php if (isset($errors['search'])) : ?>
+                      <div class="mt-2 text-sm text-red-600">
+                        <?= $errors['search'] ?? '' ?>
+                      </div>
+                    <?php endif; ?>
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 transition bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">Search</button>
+                  </div>
+                </form>
+
               </div>
             </div>
             <div class="mt-8 flow-root">
@@ -209,10 +230,10 @@ $allTransactions = $transaction->getAllTransactions();
                           $isWithdrawn = false;
                           $textColor = 'text-emerald-600';
 
-                          $sender = $userClass->getUser($transaction['user_email']);
+                          $sender = $userClass->getUserByEmail($transaction['user_email']);
 
                           if ($transaction['type'] == 'transfer') {
-                            $receiver = $userClass->getUser($transaction['receiver_email']);
+                            $receiver = $userClass->getUserByEmail($transaction['receiver_email']);
                             $textColor = 'text-blue-600';
                           }
 

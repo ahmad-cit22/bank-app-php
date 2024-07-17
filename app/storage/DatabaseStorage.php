@@ -25,7 +25,7 @@ class DatabaseStorage implements StorageInterface
         ]);
     }
 
-    public function getUser(string $email): ?array
+    public function getUserByEmail(string $email): ?array
     {
         $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = ?');
         $stmt->execute([$email]);

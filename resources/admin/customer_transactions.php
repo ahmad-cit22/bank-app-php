@@ -3,6 +3,7 @@
 declare(strict_types=1);
 session_start();
 
+use App\Classes\Input;
 use App\Classes\Message;
 use App\Classes\Utility;
 
@@ -15,13 +16,24 @@ $auth->checkAdmin();
 
 $admin = $auth->getCurrentUser();
 
-$userId = isset($_GET['id']) ? (int) $_GET['id'] : null;
-$user = $userClass->getUserById($userId);
+if (isset($_GET['id'])) {
+  $userId = (int) $_GET['id'];
+  $user = $userClass->getUserById($userId);
+} else {
+  $searchEmail = $_GET['search'];
+
+  if (!Input::isEmailValid($searchEmail)) {
+    Message::flash('error', 'Please Enter a Valid Email.');
+    Utility::redirectToBack();
+  }
+
+  $userEmail = Input::sanitizeInput($searchEmail);
+  $user = $userClass->getUserByEmail($userEmail);
+}
 
 if (!$user) {
-  Message::flash('error', 'Data not found.');
-  header('Location: ./customers.php');
-  exit;
+  Message::flash('error', 'User Data not found. Please try again.');
+  Utility::redirectToBack();
 }
 
 $transactions = $transaction->getUserTransactions($user['email']);
@@ -232,9 +244,9 @@ $balance = $transaction->getBalance($user['email']);
                           if ($transaction['type'] == 'transfer') {
                             if ($transaction['receiver_email'] == $user['email']) {
                               $isReceived = true;
-                              $sender = $userClass->getUser($transaction['user_email']);
+                              $sender = $userClass->getUserByEmail($transaction['user_email']);
                             } else {
-                              $receiver = $userClass->getUser($transaction['receiver_email']);
+                              $receiver = $userClass->getUserByEmail($transaction['receiver_email']);
                             }
                           } else {
                             if ($transaction['type'] == 'deposit') {

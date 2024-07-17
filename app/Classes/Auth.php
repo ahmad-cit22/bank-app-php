@@ -18,7 +18,7 @@ class Auth
 
     public function register(string $name, string $email, string $password, string $role = 'Customer'): bool
     {
-        if ($this->storage->getUser($email)) {
+        if ($this->storage->getUserByEmail($email)) {
             throw new Exception('User already exists');
         }
 
@@ -37,7 +37,7 @@ class Auth
 
     public function login(string $email, string $password): bool
     {
-        $user = $this->storage->getUser($email);
+        $user = $this->storage->getUserByEmail($email);
         if (!$user || !password_verify($password, $user['password'])) {
             return false;
         }

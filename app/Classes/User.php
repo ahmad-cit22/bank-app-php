@@ -13,14 +13,14 @@ class User
         $this->storage = $storage;
     }
 
-    public function getUserById(int $id): array
+    public function getUserById(int $id): ?array
     {
         return $this->storage->getUserById($id);
     }
     
-    public function getUser(string $email): array
+    public function getUserByEmail(string $email): ?array
     {
-        return $this->storage->getUser($email);
+        return $this->storage->getUserByEmail($email);
     }
 
     public function getAllUsers(): array

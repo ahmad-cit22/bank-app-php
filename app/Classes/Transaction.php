@@ -72,7 +72,7 @@ class Transaction
                 throw new Exception('You cannot send money to yourself.');
             }
 
-            if ($this->storage->getUser($receiverEmail) === null) {
+            if ($this->storage->getUserByEmail($receiverEmail) === null) {
                 throw new Exception('User with given email does not exist.');
             }
         }

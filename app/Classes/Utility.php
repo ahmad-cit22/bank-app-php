@@ -44,6 +44,19 @@ class Utility
 
         return $initials;
     }
+
+    public static function redirectToBack(): void 
+    {
+        $back_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+
+        if ($back_url) {
+            header("Location: $back_url");
+            exit;
+        } else {
+            header("Location: /login.php");
+            exit;
+        }
+    }
 }
 
 
