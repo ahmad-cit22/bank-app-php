@@ -16,6 +16,7 @@ $auth->checkAdmin();
 $admin = $auth->getCurrentUser();
 
 $allUsers = $userClass->getAllUsers();
+
 ?>
 
 <!DOCTYPE html>

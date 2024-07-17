@@ -2,8 +2,6 @@
 
 namespace App\Classes;
 
-use App\Models\Feedback;
-
 class Utility
 {
     /**
@@ -31,6 +29,12 @@ class Utility
         }
     }
 
+    /**
+     * Generates initials from a given name.
+     *
+     * @param string $name The name from which to generate initials.
+     * @return string The generated initials.
+     */
     public static function generateNameInitials(string $name): string
     {
         $words = explode(" ", $name);
@@ -45,6 +49,11 @@ class Utility
         return $initials;
     }
 
+    /**
+     * Redirect the user to the previous page or the login page if there is no previous page.
+     *
+     * @return void
+     */
     public static function redirectToBack(): void 
     {
         $back_url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;

@@ -96,6 +96,12 @@ class Input
         return true;
     }
 
+    /**
+     * Checks if the given amount is valid.
+     *
+     * @param string $amount The amount to be checked.
+     * @return bool Returns true if the amount is valid, false otherwise.
+     */
     public static function isAmountValid(string $amount): bool
     {
         $amount = str_replace(',', '', $amount);

@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $hashedPassword = Input::hashPassword($password);
 
       $auth->register($name, $email, $hashedPassword);
+      
       Message::flash('success', 'Registration successful! You can now log in.');
       header('Location: login.php');
       exit;

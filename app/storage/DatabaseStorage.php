@@ -11,11 +11,28 @@ class DatabaseStorage implements StorageInterface
 {
     private PDO $pdo;
 
+    /**
+     * Constructor for the DatabaseStorage class.
+     *
+     * @param PDO $pdo The PDO object to be injected.
+     */
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
+    
+    /**
+     * Saves a user to the database.
+     *
+     * @param array $user An associative array containing user data:
+     *                    - name: The name of the user.
+     *                    - email: The email of the user.
+     *                    - password: The password of the user.
+     *                    - role: The role of the user.
+     * @throws Exception If there is an error saving the user.
+     * @return bool True if the user is successfully saved, false otherwise.
+     */
     public function saveUser(array $user): bool
     {
         try {
@@ -33,6 +50,14 @@ class DatabaseStorage implements StorageInterface
         }
     }
 
+    /**
+     * Retrieves a user from the database based on their email.
+     *
+     * @param string $email The email of the user.
+     * @throws PDOException If there is an error executing the database query.
+     * @throws Exception If there is an error fetching the user.
+     * @return array|null The user data as an associative array, or null if the user is not found.
+     */
     public function getUserByEmail(string $email): ?array
     {
         try {
@@ -48,6 +73,13 @@ class DatabaseStorage implements StorageInterface
         }
     }
 
+    /**
+     * Retrieves a user from the database based on their ID.
+     *
+     * @param int $id The ID of the user.
+     * @throws Exception Error fetching user
+     * @return array|null The user data as an associative array, or null if the user is not found.
+     */
     public function getUserById(int $id): ?array
     {
         try {
@@ -63,6 +95,12 @@ class DatabaseStorage implements StorageInterface
         }
     }
 
+    /**
+     * Retrieves all users from the database excluding those with the 'Admin' role.
+     *
+     * @throws Exception Error fetching users: If there is an error retrieving the users.
+     * @return array The user data as an array of associative arrays.
+     */
     public function getAllUsers(): array
     {
         try {
@@ -75,6 +113,12 @@ class DatabaseStorage implements StorageInterface
         }
     }
 
+    /**
+     * Retrieves the ID of the last user in the database.
+     *
+     * @return int|null The ID of the last user, or null if no users exist.
+     * @throws Exception If there is an error fetching the last user ID.
+     */
     public function getLastUserId(): ?int
     {
         try {
@@ -89,6 +133,19 @@ class DatabaseStorage implements StorageInterface
         }
     }
 
+    /**
+     * Saves a transaction to the database.
+     *
+     * @param array $transaction The transaction data to be saved.
+     *        It should contain the following keys:
+     *        - user_email: The email of the user.
+     *        - receiver_email: The email of the receiver.
+     *        - amount: The amount of the transaction.
+     *        - type: The type of the transaction.
+     *        - created_at: The creation date of the transaction.
+     * @throws Exception Error saving transaction: If there is an error saving the transaction.
+     * @return bool True if the transaction is successfully saved, false otherwise.
+     */
     public function saveTransaction(array $transaction): bool
     {
         try {
@@ -107,6 +164,13 @@ class DatabaseStorage implements StorageInterface
         }
     }
 
+    /**
+     * Retrieves transactions of a user based on their email.
+     *
+     * @param string $userEmail The email of the user.
+     * @throws Exception Error fetching transactions: If there is an error executing the database query.
+     * @return array The transactions as an array of associative arrays.
+     */
     public function getTransactionsOfUser(string $userEmail): array
     {
         try {
@@ -123,12 +187,18 @@ class DatabaseStorage implements StorageInterface
         }
     }
 
+    /**
+     * Retrieves all transactions from the database.
+     *
+     * @throws Exception Error fetching transactions: If there is an error executing the database query.
+     * @return array The transactions as an array of associative arrays.
+     */
     public function getAllTransactions(): array
     {
         try {
             $query = "SELECT * FROM transactions ORDER BY created_at DESC";
             $stmt = $this->pdo->query($query);
-            
+
             return $stmt->fetchAll();
         } catch (PDOException $e) {
             throw new Exception("Error fetching transactions: " . $e->getMessage());

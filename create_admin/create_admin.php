@@ -60,6 +60,7 @@ echo "Creating Admin...\n";
 
 try {
     $auth->register($name, $email, $hashedPassword, 'Admin');
+
     echo "\n";
     echo "Admin created successfully.\n";
     echo "Email: " . $email . "\n";
