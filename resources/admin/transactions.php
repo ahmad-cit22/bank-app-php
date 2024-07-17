@@ -185,10 +185,16 @@ $allTransactions = $transaction->getAllTransactions();
                     <thead>
                       <tr>
                         <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                          Customer Name
+                          Type
                         </th>
                         <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Amount
+                        </th>
+                        <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                          User/Sender Name
+                        </th>
+                        <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                          Receiver Name
                         </th>
                         <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Date
@@ -196,63 +202,54 @@ $allTransactions = $transaction->getAllTransactions();
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Bruce Wayne
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                          +$10,240
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          29 Sep 2023, 09:25 AM
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Al Nahian
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                          -$2,500
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          15 Sep 2023, 06:14 PM
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Muhammad Alp Arslan
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                          +$49,556
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          03 Jul 2023, 12:55 AM
-                        </td>
-                      </tr>
+                      <?php if (!empty($allTransactions)) : ?>
+                        <?php foreach ($allTransactions as $transaction) :
+                          $receiver = null;
+                          $sender = null;
+                          $isWithdrawn = false;
+                          $textColor = 'text-emerald-600';
 
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Povilas Korop
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                          +$6,125
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          07 Jun 2023, 10:00 PM
-                        </td>
-                      </tr>
+                          $sender = $userClass->getUser($transaction['user_email']);
 
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Martin Joo
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                          -$125
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          02 Feb 2023, 8:30 PM
-                        </td>
-                      </tr>
+                          if ($transaction['type'] == 'transfer') {
+                            $receiver = $userClass->getUser($transaction['receiver_email']);
+                            $textColor = 'text-blue-600';
+                          }
+
+                          if ($transaction['type'] == 'withdraw') {
+                            $isWithdrawn = true;
+                          }
+                          // Format the transaction date
+                          $date = Utility::dateFormat($transaction['created_at']);
+
+                          if ($isWithdrawn) {
+                            $textColor = 'text-rose-600';
+                          }
+                        ?>
+                          <tr>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm <?= $textColor ?> sm:pl-0">
+                              <?= ucfirst($transaction['type']) ?>
+                            </td>
+                            <td class="whitespace-nowrap px-2 py-4 text-sm font-medium  <?= $textColor ?> ">
+                              $<?= number_format($transaction['amount'], 2) ?>
+                            </td>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
+                              <?= $sender ? $sender['name'] : 'N/A' ?>
+                            </td>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
+                              <?= $receiver ? $receiver['name'] : 'N/A' ?>
+                            <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
+                              <?= $date ?>
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
+                      <?php else : ?>
+                        <tr>
+                          <td colspan="5" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0 text-center">
+                            No transactions found
+                          </td>
+                        </tr>
+                      <?php endif; ?>
                     </tbody>
                   </table>
                 </div>

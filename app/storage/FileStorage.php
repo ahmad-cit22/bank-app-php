@@ -146,7 +146,7 @@ class FileStorage implements StorageInterface
 
         $orderedTransactions = array_reverse($transactions);
 
-        return $transactions;
+        return $orderedTransactions;
     }
 
     private function loadData(): void

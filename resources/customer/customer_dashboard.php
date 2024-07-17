@@ -226,7 +226,6 @@ $balance = $transaction->getBalance($user['email']);
                     <tbody class="divide-y divide-gray-200 bg-white">
                       <?php if (!empty($transactions)) : ?>
                         <?php foreach ($transactions as $transaction) :
-                          // Retrieve user details for transfer transactions
                           $receiver = null;
                           $sender = null;
                           $isReceived = false;
