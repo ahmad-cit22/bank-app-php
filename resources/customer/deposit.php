@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 Deposit Money To Your Account
               </h3>
               <div class="mt-4 text-sm text-gray-500">
-                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
+                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
                   <!-- Input Field -->
                   <div class="relative mt-2 rounded-md">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-0">

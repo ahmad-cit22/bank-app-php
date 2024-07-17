@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="sm:rounded-lg">
             <div class="px-4 py-5 sm:p-6">
               <div class="mt-4 text-sm text-gray-500">
-                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
+                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
                   <!-- Recipient's Email Input -->
                   <input type="email" name="email" id="email" value="<?= $email ?? '' ?>" class="block w-full ring-0 outline-none py-2 text-gray-800 border-b placeholder:text-gray-400 md:text-4xl" placeholder="Recipient's Email Address" required />
 
