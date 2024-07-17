@@ -1,3 +1,65 @@
+<?php
+
+declare(strict_types=1);
+session_start();
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use App\Classes\Message;
+use App\Classes\Input;
+use App\Classes\ErrorBag;
+
+$dependencies = require __DIR__ . '/../../bootstrap.php';
+$auth = $dependencies['auth'];
+$userClass = $dependencies['user'];
+$transaction = $dependencies['transaction'];
+
+$auth->check();
+
+$user = $auth->getCurrentUser();
+
+$balance = $transaction->getBalance($user['email']);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $errorBag = new ErrorBag();
+
+  $email = Input::get('email');
+  $amount = Input::get('amount');
+
+  if (!Input::isEmailValid($email)) {
+    $errorBag->addError('email', 'Please enter a valid email.');
+  }
+
+  if (!Input::isAmountValid($amount)) {
+    $errorBag->addError('amount', 'Please enter a valid amount (Positive numbers only).');
+  }
+
+  if ($errorBag->hasErrors()) {
+    $errors = $errorBag->getErrors();
+  } else {
+    $amount = (float) $amount;
+
+    if ($amount > $balance) {
+      Message::flash('error', 'Insufficient balance to transfer!');
+      header('Location: ./transfer.php');
+      exit;
+    }
+
+    $recieverEmail = Input::sanitizeInput($email);
+
+    try {
+      $transaction->save($user['email'], $amount, 'transfer', $recieverEmail);
+      Message::flash('success', 'Amount transferred successfully.');
+      header('Location: ./transfer.php');
+      exit;
+    } catch (Exception $e) {
+      Message::flash('error', $e->getMessage());
+    }
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html class="h-full bg-gray-100" lang="en">
 
@@ -129,6 +191,22 @@
       </nav>
       <header class="py-10">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <?php $message = Message::flash('success');
+            if ($message) : ?>
+              <div class="my-3 bg-green-100 border border-green-200 text-sm text-green-700 rounded-lg p-3 text-center" role="alert">
+                <span class="font-bold"><?= $message; ?></span>
+              </div>
+            <?php endif; ?>
+            <?php $message = Message::flash('error');
+            if ($message) : ?>
+              <div class="my-3 bg-red-100 border border-red-200 text-sm text-red-700 rounded-lg p-3 text-center" role="alert">
+                <span class="font-bold"><?= $message; ?></span>
+              </div>
+            <?php endif; ?>
+          </div>
+
           <h1 class="text-3xl font-bold tracking-tight text-white">
             Transfer Balance
           </h1>
@@ -146,7 +224,7 @@
                 Current Balance
               </dt>
               <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-                $10,115,091.00
+                $<?= number_format($balance, 2) ?>
               </dd>
             </div>
           </dl>
@@ -156,17 +234,31 @@
           <div class="sm:rounded-lg">
             <div class="px-4 py-5 sm:p-6">
               <div class="mt-4 text-sm text-gray-500">
-                <form action="#" method="POST">
+                <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST" novalidate>
                   <!-- Recipient's Email Input -->
-                  <input type="email" name="email" id="email" class="block w-full ring-0 outline-none py-2 text-gray-800 border-b placeholder:text-gray-400 md:text-4xl" placeholder="Recipient's Email Address" required />
+                  <input type="email" name="email" id="email" value="<?= $email ?? '' ?>" class="block w-full ring-0 outline-none py-2 text-gray-800 border-b placeholder:text-gray-400 md:text-4xl" placeholder="Recipient's Email Address" required />
+
+                  <!-- Error Message -->
+                  <?php if (isset($errors['email'])) : ?>
+                    <div class="mt-2 text-sm text-red-600">
+                      <?= $errors['email'] ?? '' ?>
+                    </div>
+                  <?php endif; ?>
 
                   <!-- Amount -->
                   <div class="relative mt-4 md:mt-8">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-0">
-                      <span class="text-gray-400 md:text-4xl">$</span>
+                      <span class="text-gray-400 sm:text-4xl">$</span>
                     </div>
-                    <input type="number" name="amount" id="amount" class="block w-full ring-0 outline-none pl-4 py-2 md:pl-8 text-gray-800 border-b border-b-emerald-500 placeholder:text-gray-400 md:text-4xl" placeholder="0.00" required />
+                    <input type="number" name="amount" id="amount" value="<?= $amount ?? '' ?>" class="block w-full ring-0 outline-none text-xl pl-4 py-2 sm:pl-8 text-gray-800 border-b border-b-emerald-500 placeholder:text-gray-400 sm:text-4xl" placeholder="0.00" required />
                   </div>
+
+                  <!-- Error Message -->
+                  <?php if (isset($errors['amount'])) : ?>
+                    <div class="mt-2 text-sm text-red-600">
+                      <?= $errors['amount'] ?? '' ?>
+                    </div>
+                  <?php endif; ?>
 
                   <!-- Submit Button -->
                   <div class="mt-5">

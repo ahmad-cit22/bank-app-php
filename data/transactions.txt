@@ -1,0 +1,12 @@
+{"user_email":"xubyr@mailinator.com","receiver_email":null,"amount":2424,"type":"deposit","created_at":"2024-07-17 05:05:20"}
+{"user_email":"xubyr@mailinator.com","receiver_email":null,"amount":200,"type":"deposit","created_at":"2024-07-17 05:06:42"}
+{"user_email":"xubyr@mailinator.com","receiver_email":null,"amount":100,"type":"deposit","created_at":"2024-07-17 05:09:27"}
+{"user_email":"xubyr@mailinator.com","receiver_email":null,"amount":1000,"type":"deposit","created_at":"2024-07-17 06:31:26"}
+{"user_email":"xubyr@mailinator.com","receiver_email":null,"amount":100,"type":"withdraw","created_at":"2024-07-17 06:42:15"}
+{"user_email":"xubyr@mailinator.com","receiver_email":null,"amount":500,"type":"withdraw","created_at":"2024-07-17 06:42:23"}
+{"user_email":"xubyr@mailinator.com","receiver_email":"pyxityj@mailinator.com","amount":300,"type":"transfer","created_at":"2024-07-17 07:04:29"}
+{"user_email":"xubyr@mailinator.com","receiver_email":"movelaqody@mailinator.com","amount":1000,"type":"transfer","created_at":"2024-07-17 07:05:20"}
+{"user_email":"movelaqody@mailinator.com","receiver_email":"pyxityj@mailinator.com","amount":500,"type":"transfer","created_at":"2024-07-17 07:05:53"}
+{"user_email":"movelaqody@mailinator.com","receiver_email":"xubyr@mailinator.com","amount":100,"type":"transfer","created_at":"2024-07-17 08:25:09"}
+{"user_email":"xubyr@mailinator.com","receiver_email":null,"amount":5000,"type":"deposit","created_at":"2024-07-17 14:41:39"}
+{"user_email":"vymubux@mailinator.com","receiver_email":null,"amount":1000,"type":"deposit","created_at":"2024-07-17 15:33:15"}

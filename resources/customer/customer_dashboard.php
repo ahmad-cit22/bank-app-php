@@ -6,17 +6,19 @@ session_start();
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use App\Classes\Message;
+use App\Classes\Utility;
 
 $dependencies = require __DIR__ . '/../../bootstrap.php';
 $auth = $dependencies['auth'];
 $userClass = $dependencies['user'];
+$transaction = $dependencies['transaction'];
 
 $auth->check();
 
 $user = $auth->getCurrentUser();
 
-$transactions = $userClass->getUserTransactions($user['email']);
-$balance = $userClass->getBalance($user['email']);
+$transactions = $transaction->getUserTransactions($user['email']);
+$balance = $transaction->getBalance($user['email']);
 
 ?>
 
@@ -194,8 +196,7 @@ $balance = $userClass->getBalance($user['email']);
             <div class="sm:flex sm:items-center">
               <div class="sm:flex-auto">
                 <p class="mt-2 text-sm text-gray-700">
-                  Here's a list of all your transactions which inlcuded
-                  receiver's name, email, amount and date.
+                  Here's a list of all your transactions which inlcuded transaction type, amount, receiver or sender's name, email and date.
                 </p>
               </div>
             </div>
@@ -206,13 +207,16 @@ $balance = $userClass->getBalance($user['email']);
                     <thead>
                       <tr>
                         <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                          Receiver Name
-                        </th>
-                        <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                          Email
+                          Type
                         </th>
                         <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Amount
+                        </th>
+                        <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                          Receiver/Sender Name
+                        </th>
+                        <th scope="col" class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                          Email
                         </th>
                         <th scope="col" class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900">
                           Date
@@ -220,78 +224,67 @@ $balance = $userClass->getBalance($user['email']);
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Bruce Wayne
-                        </td>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                          bruce@wayne.com
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                          +$10,240
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          29 Sep 2023, 09:25 AM
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Al Nahian
-                        </td>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                          alnahian@2003.com
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                          -$2,500
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          15 Sep 2023, 06:14 PM
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Muhammad Alp Arslan
-                        </td>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                          alp@arslan.com
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                          +$49,556
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          03 Jul 2023, 12:55 AM
-                        </td>
-                      </tr>
+                      <?php if (!empty($transactions)) : ?>
+                        <?php foreach ($transactions as $transaction) :
+                          // Retrieve user details for transfer transactions
+                          $receiver = null;
+                          $sender = null;
+                          $isReceived = false;
 
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Povilas Korop
-                        </td>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                          povilas@korop.com
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-emerald-600">
-                          +$6,125
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          07 Jun 2023, 10:00 PM
-                        </td>
-                      </tr>
+                          if ($transaction['type'] == 'transfer') {
+                            if ($transaction['receiver_email'] == $user['email']) {
+                              $isReceived = true;
+                              $sender = $userClass->getUser($transaction['user_email']);
+                            } else {
+                              $receiver = $userClass->getUser($transaction['receiver_email']);
+                            }
+                          } else {
+                            if ($transaction['type'] == 'deposit') {
+                              $isReceived = true;
+                            }
+                          }
+                          // Format the transaction date
+                          $date = Utility::dateFormat($transaction['created_at']);
 
-                      <tr>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
-                          Martin Joo
-                        </td>
-                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
-                          martin@joo.com
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm font-medium text-red-600">
-                          -$125
-                        </td>
-                        <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
-                          02 Feb 2023, 8:30 PM
-                        </td>
-                      </tr>
+                          $textColor = 'text-emerald-600';
+                          if (!$isReceived) {
+                            $textColor = 'text-rose-600';
+                          }
+                        ?>
+                          <tr>
+                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm <?= $textColor ?> sm:pl-0">
+                              <?= ucfirst($transaction['type']) ?>
+                            </td>
+                            <td class="whitespace-nowrap px-2 py-4 text-sm font-medium  <?= $textColor ?> ">
+                              <?= $isReceived ? '+' : '-' ?> $<?= number_format($transaction['amount'], 2) ?>
+                            </td>
+                            <?php if ($transaction['type'] == 'transfer') : ?>
+                              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
+                                <?= $isReceived ? $sender['name'] : $receiver['name'] ?>
+                              </td>
+                              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 sm:pl-0">
+                                <?= $isReceived ? $sender['email'] : $receiver['email'] ?>
+                              </td>
+                            <?php else : ?>
+                              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
+                                N/A
+                              </td>
+                              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0">
+                                N/A
+                              </td>
+                            <?php endif; ?>
+                            <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
+                              <?= $date ?>
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
+                      <?php else : ?>
+                        <tr>
+                          <td colspan="5" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-800 sm:pl-0 text-center">
+                            No transactions found
+                          </td>
+                        </tr>
+                      <?php endif; ?>
                     </tbody>
                   </table>
                 </div>

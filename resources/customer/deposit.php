@@ -12,12 +12,13 @@ use App\Classes\ErrorBag;
 $dependencies = require __DIR__ . '/../../bootstrap.php';
 $auth = $dependencies['auth'];
 $userClass = $dependencies['user'];
+$transaction = $dependencies['transaction'];
 
 $auth->check();
 
 $user = $auth->getCurrentUser();
 
-$balance = $userClass->getBalance($user['email']);
+$balance = $transaction->getBalance($user['email']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $errorBag = new ErrorBag();
@@ -31,15 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($errorBag->hasErrors()) {
     $errors = $errorBag->getErrors();
   } else {
+    $amount = (float) $amount;
+
     try {
-      if ($auth->login($email, $password)) {
-        Message::flash('success', 'You are now logged in!');
-        $auth->redirectAsPerRole();
-      } else {
-        Message::flash('error', 'Invalid credentials. Try again!');
-      }
+      $transaction->save($user['email'], $amount, 'deposit');
+      Message::flash('success', 'Amount deposited successfully.');
+      header('Location: ./deposit.php');
+      exit;
     } catch (Exception $e) {
-      Message::flash('loginError', $e->getMessage());
+      Message::flash('error', $e->getMessage());
     }
   }
 }
@@ -231,6 +232,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <input type="number" name="amount" id="amount" value="<?= $amount ?? '' ?>" class="block w-full ring-0 outline-none text-xl pl-4 py-2 sm:pl-8 text-gray-800 border-b border-b-emerald-500 placeholder:text-gray-400 sm:text-4xl" placeholder="0.00" required />
                   </div>
+
+                  <!-- Error Message -->
+                  <?php if (isset($errors['amount'])) : ?>
+                    <div class="mt-2 text-sm text-red-600">
+                      <?= $errors['amount'] ?? '' ?>
+                    </div>
+                  <?php endif; ?>
 
                   <!-- Submit Button -->
                   <div class="mt-5">

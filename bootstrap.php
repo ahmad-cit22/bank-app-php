@@ -42,4 +42,5 @@ $transaction = new Transaction($storage);
 return [
     'auth' => $auth,
     'user' => $user,
+    'transaction' => $transaction
 ];

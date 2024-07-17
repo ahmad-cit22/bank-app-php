@@ -9,14 +9,13 @@ use App\Classes\Utility;
 $dependencies = require __DIR__ . '/../../bootstrap.php';
 $auth = $dependencies['auth'];
 $userClass = $dependencies['user'];
+$transaction = $dependencies['transaction'];
 
 $auth->checkAdmin();
 
 $admin = $auth->getCurrentUser();
 
 $allUsers = $userClass->getAllUsers();
-$allTransactions = $userClass->getAllTransactions();
-
 ?>
 
 <!DOCTYPE html>

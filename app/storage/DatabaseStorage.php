@@ -33,6 +33,14 @@ class DatabaseStorage implements StorageInterface
         return $user ?: null;
     }
 
+    public function getUserById(int $id): ?array
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE id = ?');
+        $stmt->execute([$id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user ?: null;
+    }
+
     public function getAllUsers(): array
     {
         $stmt = $this->pdo->query('SELECT * FROM users');

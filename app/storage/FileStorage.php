@@ -23,7 +23,7 @@ class FileStorage implements StorageInterface
         if (!is_dir($this->dataDir)) {
             mkdir($this->dataDir, 0777, true);
         }
-        
+
         if (!file_exists($this->userFile)) {
             touch($this->userFile);
         }
@@ -57,6 +57,21 @@ class FileStorage implements StorageInterface
 
         return null;
     }
+    
+    public function getUserById(int $id): ?array
+    {
+        if ($this->usersData && count($this->usersData) > 0) {
+            foreach ($this->usersData as $userData) {
+                $user = json_decode($userData, true);
+
+                if ($user['id'] === $id) {
+                    return $user;
+                }
+            }
+        }
+
+        return null;
+    }
 
     public function getAllUsers(): array
     {
@@ -82,7 +97,7 @@ class FileStorage implements StorageInterface
         if ($this->usersData && count($this->usersData) > 0) {
             foreach ($this->usersData as $userData) {
                 $user = json_decode($userData, true);
-                    $users[] = $user;
+                $users[] = $user;
             }
         }
 
@@ -106,13 +121,15 @@ class FileStorage implements StorageInterface
             foreach ($this->transactionsData as $transactionData) {
                 $transaction = json_decode($transactionData, true);
 
-                if ($transaction['email'] === $userEmail) {
+                if ($transaction['user_email'] === $userEmail || $transaction['receiver_email'] === $userEmail) {
                     $transactions[] = $transaction;
                 }
             }
         }
 
-        return $transactions;
+        $orderedTransactions = array_reverse($transactions);
+
+        return $orderedTransactions;
     }
 
     public function getAllTransactions(): array
@@ -127,6 +144,8 @@ class FileStorage implements StorageInterface
             }
         }
 
+        $orderedTransactions = array_reverse($transactions);
+
         return $transactions;
     }
 
@@ -135,13 +154,13 @@ class FileStorage implements StorageInterface
         if (!file_exists($this->userFile) || !is_readable($this->userFile)) {
             throw new Exception("Error Loading Data File!");
         }
-        
+
         if (!file_exists($this->transactionFile) || !is_readable($this->transactionFile)) {
             throw new Exception("Error Loading Data File!");
         }
 
         $this->usersData = file($this->userFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        
+
         $this->transactionsData = file($this->transactionFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     }
 }

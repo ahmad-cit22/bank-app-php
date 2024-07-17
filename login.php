@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         Message::flash('error', 'Invalid credentials. Try again!');
       }
     } catch (Exception $e) {
-      Message::flash('loginError', $e->getMessage());
+      Message::flash('error', $e->getMessage());
     }
   }
 }
