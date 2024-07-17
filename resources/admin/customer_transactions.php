@@ -253,13 +253,10 @@ $balance = $transaction->getBalance($user['email']);
                               $isReceived = true;
                             }
                           }
-                          // Format the transaction date
+                          
                           $date = Utility::dateFormat($transaction['created_at']);
 
-                          $textColor = 'text-emerald-600';
-                          if (!$isReceived) {
-                            $textColor = 'text-rose-600';
-                          }
+                          $textColor = $isReceived ? 'text-emerald-600' : 'text-rose-600';
                         ?>
                           <tr>
                             <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm <?= $textColor ?> sm:pl-0">

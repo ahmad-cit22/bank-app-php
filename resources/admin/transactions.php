@@ -240,7 +240,7 @@ $allTransactions = $transaction->getAllTransactions();
                           if ($transaction['type'] == 'withdraw') {
                             $isWithdrawn = true;
                           }
-                          // Format the transaction date
+                          
                           $date = Utility::dateFormat($transaction['created_at']);
 
                           if ($isWithdrawn) {
